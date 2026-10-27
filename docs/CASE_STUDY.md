@@ -1,5 +1,7 @@
 # Case Study: DocQA, document answers you can audit
 
+**[Moiz Alizai](https://www.linkedin.com/in/moizalizai/)** · One-page PDF: [DocQA_Case_Study_Moiz_Alizai.pdf](DocQA_Case_Study_Moiz_Alizai.pdf)
+
 **Role:** Solo build: design, backend, LLM integration, frontend, deployment · **Stack:** Python, FastAPI, Claude API (Opus 5.5), Pydantic, Streamlit, Modal · **Links:** [Live demo](https://alizaimoiz6--docqa-ui.us-east.modal.run) · [GitHub](https://github.com/alizaimoiz6-collab/docqa)
 
 ---

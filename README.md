@@ -2,7 +2,9 @@
 
 Upload a PDF or text file, ask a question, and get a structured answer in which every claim points to a page and quotes the passage it came from. Each quote is then checked against the source text on the server, so a citation the model made up shows up as unverified.
 
-**Live demo:** [UI](https://alizaimoiz6--docqa-ui.us-east.modal.run) · [API docs](https://alizaimoiz6--docqa-api.us-east.modal.run/docs) (it may take a few seconds to wake up after being idle)
+**Live demo:** [UI](https://alizaimoiz6--docqa-ui.us-east.modal.run) · [API docs](https://alizaimoiz6--docqa-api.us-east.modal.run/docs) (it may take a few seconds to wake up after being idle) · **Case study:** [one-page PDF](docs/DocQA_Case_Study_Moiz_Alizai.pdf)
+
+Built by [Moiz Alizai](https://www.linkedin.com/in/moizalizai/).
 
 ![stack](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white) ![stack](https://img.shields.io/badge/Claude_API-D97757?logo=anthropic&logoColor=white) ![stack](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white) ![stack](https://img.shields.io/badge/Modal-000000) ![tests](https://img.shields.io/badge/tests-26_passing-brightgreen)
 

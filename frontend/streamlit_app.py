@@ -90,9 +90,9 @@ for i, ans in enumerate(st.session_state.get("history", [])):
         verified = sum(c["verified"] for c in ans["citations"])
         with st.expander(f"Citations ({verified}/{len(ans['citations'])} verified)", expanded=i == 0):
             for c in ans["citations"]:
-                where = f"page {c['page']}" if c["page"] else c["chunk_id"]
-                mark = "✅" if c["verified"] else "⚠️ not found verbatim"
-                st.markdown(f"**[{c['chunk_id']}] {where}** {mark}\n\n> {c['quote']}")
+                where = f" · page {c['page']}" if c["page"] else ""
+                mark = "✅ verified" if c["verified"] else "⚠️ not found verbatim"
+                st.markdown(f"**[{c['chunk_id']}]{where}** {mark}\n\n> {c['quote']}")
 
     u = ans["usage"]
     st.caption(
