@@ -112,3 +112,28 @@ def test_request_shape():
     assert kw["output_format"] is LLMAnswer
     assert kw["system"][1]["cache_control"] == {"type": "ephemeral"}
     assert '<passage id="C1">' in kw["system"][1]["text"]
+
+
+def test_shared_ledger_sums_across_containers():
+    import datetime as dt
+    import threading
+    from collections import defaultdict
+
+    from docqa.budget import ModalDictLedger
+
+    shared: dict = {}  # stands in for the modal.Dict every container sees
+
+    def container(name):
+        ledger = ModalDictLedger.__new__(ModalDictLedger)
+        ledger._dict, ledger._container = shared, name
+        ledger._today = lambda: dt.date(2026, 10, 27)
+        ledger._local, ledger._lock = defaultdict(float), threading.Lock()
+        return ledger
+
+    a, b = container("a"), container("b")
+    a.add(0.25)
+    b.add(0.50)
+    a.add(0.25)
+    shared["2026-10-26:a"] = 9.99  # yesterday doesn't count
+
+    assert a.spent_today() == b.spent_today() == pytest.approx(1.00)

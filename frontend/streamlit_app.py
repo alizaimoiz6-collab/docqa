@@ -13,15 +13,18 @@ st.title("📄 DocQA")
 st.caption("Ask questions about a PDF or text document. Every answer cites the passages it relies on.")
 
 
-def api_error(resp: requests.Response) -> str:
+def show_api_error(resp: requests.Response) -> None:
     try:
         body = resp.json()
-        msg = body.get("detail") or body
+        code, msg = body.get("error"), body.get("detail") or body
     except ValueError:
-        msg = resp.text[:300]
-    if resp.status_code == 429 and resp.headers.get("Retry-After"):
-        msg = f"{msg} (retry in {resp.headers['Retry-After']}s)"
-    return f"{resp.status_code}: {msg}"
+        code, msg = None, resp.text[:300]
+    if code == "daily_limit_reached":
+        st.warning(f"🌙 {msg}")
+    elif resp.status_code == 429:
+        st.warning(f"{msg} Try again in {resp.headers.get('Retry-After', 'a few')} seconds.")
+    else:
+        st.error(f"{resp.status_code}: {msg}")
 
 
 # ---- Upload -----------------------------------------------------------------
@@ -43,7 +46,7 @@ if uploaded and st.session_state.get("uploaded_name") != uploaded.name + str(upl
         st.session_state.uploaded_name = uploaded.name + str(uploaded.size)
         st.session_state.history = []
     else:
-        st.error(api_error(resp))
+        show_api_error(resp)
         st.stop()
 
 doc = st.session_state.get("doc")
@@ -74,7 +77,7 @@ if submitted and question.strip():
     if resp.ok:
         st.session_state.history.insert(0, resp.json())
     else:
-        st.error(api_error(resp))
+        show_api_error(resp)
 
 for i, ans in enumerate(st.session_state.get("history", [])):
     st.divider()

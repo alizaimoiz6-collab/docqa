@@ -20,13 +20,16 @@ class Settings:
 
     max_upload_mb: int = _int("MAX_UPLOAD_MB", 20)
     chunk_chars: int = _int("CHUNK_CHARS", 1200)
-    # Documents under this many characters (~100k tokens) are sent whole;
+    # Documents under this many characters (~25k tokens, ~50 pages) are sent whole;
     # larger ones are narrowed to the top_k most relevant chunks first.
-    context_char_budget: int = _int("CONTEXT_CHAR_BUDGET", 400_000)
+    context_char_budget: int = _int("CONTEXT_CHAR_BUDGET", 100_000)
     top_k_chunks: int = _int("TOP_K_CHUNKS", 40)
 
-    # Per-client cap on /ask calls, to protect the API key on a public URL.
+    # Per-client caps, to protect the API key on a public URL.
     ask_rate_limit_per_min: int = _int("ASK_RATE_LIMIT_PER_MIN", 10)
+    upload_rate_limit_per_min: int = _int("UPLOAD_RATE_LIMIT_PER_MIN", 5)
+    # Total Claude spend allowed per UTC day across all visitors; 0 disables the cap.
+    daily_budget_usd: float = float(os.environ.get("DAILY_BUDGET_USD", 1.0))
 
     # "memory" for local dev; "modal" shares documents across Modal containers.
     store_backend: str = os.environ.get("DOCQA_STORE", "memory")

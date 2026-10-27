@@ -1,8 +1,10 @@
+import datetime as dt
 from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
 
+from docqa.budget import InMemoryLedger, usage_cost
 from docqa.config import Settings
 from docqa.llm import AnswerResult, LLMError
 from docqa.main import create_app
@@ -29,9 +31,10 @@ class FakeAnswerer:
         )
 
 
-def make_client(answerer=None, **overrides) -> TestClient:
+def make_client(answerer=None, ledger=None, **overrides) -> TestClient:
     settings = Settings(**overrides)
-    return TestClient(create_app(settings=settings, store=InMemoryStore(), answerer=answerer or FakeAnswerer()))
+    app = create_app(settings=settings, store=InMemoryStore(), answerer=answerer or FakeAnswerer(), ledger=ledger)
+    return TestClient(app)
 
 
 def upload_pdf(client: TestClient) -> dict:
@@ -154,3 +157,76 @@ def test_llm_errors_map_to_http_status(status):
 def test_question_validation():
     resp = make_client().post("/ask", json={"doc_id": "x", "question": "?"})
     assert resp.status_code == 422
+
+
+def test_upload_is_rate_limited_per_client():
+    client = make_client(upload_rate_limit_per_min=2)
+    upload_pdf(client)
+    upload_pdf(client)
+    data = (SAMPLES / "acme_policy.pdf").read_bytes()
+    resp = client.post("/upload", files={"file": ("acme_policy.pdf", data, "application/pdf")})
+    assert resp.status_code == 429
+    assert "uploads per minute" in resp.json()["detail"]
+
+
+# ---- Daily budget -------------------------------------------------------------
+
+OK_ANSWER = LLMAnswer(answerable=True, answer="ok", confidence="high", citations=[])
+
+
+class Clock:
+    def __init__(self):
+        self.day = dt.date(2026, 10, 27)
+
+    def __call__(self):
+        return self.day
+
+
+def test_daily_budget_blocks_questions_once_spent():
+    ledger = InMemoryLedger()
+    ledger.add(1.00)
+    fake = FakeAnswerer(OK_ANSWER)
+    client = make_client(fake, ledger=ledger, daily_budget_usd=1.00)
+    doc = upload_pdf(client)
+
+    resp = client.post("/ask", json={"doc_id": doc["doc_id"], "question": "What is covered?"})
+
+    assert resp.status_code == 429
+    assert resp.json()["error"] == "daily_limit_reached"
+    assert "tomorrow" in resp.json()["detail"]
+    assert int(resp.headers["Retry-After"]) > 0
+    assert fake.calls == []  # Claude was never called
+
+
+def test_spend_is_recorded_and_resets_the_next_day():
+    clock = Clock()
+    ledger = InMemoryLedger(today=clock)
+    # FakeAnswerer reports 100 input + 20 output tokens on an unknown model,
+    # priced at the fallback tier: (100*10 + 20*50) / 1e6 = $0.002 per question.
+    client = make_client(FakeAnswerer(OK_ANSWER), ledger=ledger, daily_budget_usd=0.003)
+    doc = upload_pdf(client)
+    payload = {"doc_id": doc["doc_id"], "question": "What is covered?"}
+
+    first = client.post("/ask", json=payload)
+    assert first.status_code == 200
+    assert first.json()["cost_usd"] == pytest.approx(0.002)
+    assert client.post("/ask", json=payload).status_code == 200  # $0.002 < $0.003, allowed
+    assert client.post("/ask", json=payload).json()["error"] == "daily_limit_reached"  # $0.004 spent
+
+    clock.day += dt.timedelta(days=1)
+    assert client.post("/ask", json=payload).status_code == 200
+    assert client.get("/health").json()["spent_today_usd"] == pytest.approx(0.002)
+
+
+def test_zero_budget_disables_the_cap():
+    ledger = InMemoryLedger()
+    ledger.add(500.0)
+    client = make_client(FakeAnswerer(OK_ANSWER), ledger=ledger, daily_budget_usd=0)
+    doc = upload_pdf(client)
+    assert client.post("/ask", json={"doc_id": doc["doc_id"], "question": "What is covered?"}).status_code == 200
+
+
+def test_usage_cost_uses_model_prices():
+    usage = Usage(input_tokens=1000, output_tokens=500, cache_read_input_tokens=10_000, cache_creation_input_tokens=2000)
+    # Opus 5.5: 1000*4 + 500*20 + 10000*0.20 + 2000*5 = 26,000 per million tokens
+    assert usage_cost("claude-opus-5-5", usage) == pytest.approx(0.026)

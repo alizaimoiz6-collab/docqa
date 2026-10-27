@@ -14,7 +14,7 @@ A web service that takes a PDF or text document and a question, and returns a **
 
 ### How it works
 1. **Upload:** the document is parsed and split into numbered passages that keep their page numbers.
-2. **Ask:** the whole document (up to about 100k tokens), or the most relevant passages by BM25 ranking, goes to Claude with the question.
+2. **Ask:** the whole document (up to about 50 pages), or the most relevant passages by BM25 ranking, goes to Claude with the question.
 3. **Structured output:** Claude must return a schema-validated Pydantic object: `answer`, `confidence`, `answerable`, and a list of `{passage, quote}` citations.
 4. **Verify:** each quote is matched against the passage it cites and labelled ✅ verified or ⚠️ unverified.
 
@@ -26,7 +26,8 @@ A web service that takes a PDF or text document and a question, and returns a **
 | Long context first, retrieval only for very large files | Fewer missed answers, and no vector database to run or pay for |
 | Prompt caching on the document | Follow-up questions on the same file cost less and return faster |
 | Explicit "not in document" answers | The model can say the answer isn't there instead of guessing |
-| Two-layer error handling (SDK retries, then clear HTTP codes; per-client rate limit) | Stays up under API rate limits and timeouts, and protects the API key on a public URL |
+| Two-layer error handling (SDK retries, then clear HTTP codes; per-client rate limits) | Stays up under API rate limits and timeouts |
+| Shared $1/day spend cap, tracked from real token usage | A public demo link can never run up the API bill |
 
 ### Results
 Measured on the live deployment with an 18-question test set over three sample documents (insurance policy PDF, HR policy, claims-handling manual). The run is reproducible with [`eval/run_eval.py`](../eval/run_eval.py).
@@ -39,7 +40,7 @@ Measured on the live deployment with an 18-question test set over three sample d
 | End-to-end latency, median / p90 | **3.5 s / 4.1 s** |
 | Average cost per question | **$0.005** ($0.012 for the first question on a document, $0.004 for follow-ups) |
 | Savings from prompt caching | **55%** lower cost than without caching |
-| Automated tests | 26 passing (offline, Claude stubbed) |
+| Automated tests | 32 passing (offline, Claude stubbed) |
 | Deployment | Public on Modal, scales to zero when idle |
 
 *Small test set on short documents; longer documents will take longer and cost more per first question.*

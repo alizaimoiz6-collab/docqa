@@ -169,7 +169,7 @@
         <li><strong>Server-side citation checks.</strong> Turns "trust the model" into a check that can be measured and audited.</li>
         <li><strong>Long context first, no vector database.</strong> Fewer missed answers, less infrastructure; a light ranker handles huge files.</li>
         <li><strong>Prompt caching.</strong> Follow-ups reuse the cached document, cutting cost 55% in testing.</li>
-        <li><strong>Built for failure.</strong> Retries, clear errors for rate limits and timeouts, and a per-user limit protecting the API key.</li>
+        <li><strong>Built for failure.</strong> Retries, clear errors for timeouts, per-user rate limits, and a shared $1/day spend cap.</li>
       </ul>
     </div>
     <figure>
@@ -190,7 +190,7 @@
     <div>
       <h2>Engineering quality and next steps</h2>
       <ul class="plain">
-        <li>26 automated tests plus a reproducible live evaluation.</li>
+        <li>32 automated tests plus a reproducible live evaluation.</li>
         <li>Public API with OpenAPI docs; deployed on Modal.</li>
         <li><strong>Next:</strong> OCR for scanned PDFs, multi-document Q&amp;A, streaming.</li>
       </ul>

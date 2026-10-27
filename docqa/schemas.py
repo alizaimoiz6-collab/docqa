@@ -82,6 +82,7 @@ class AskResponse(BaseModel):
     retrieval: Literal["full_document", "top_k"]
     model: str
     usage: Usage
+    cost_usd: float
     latency_ms: int
 
 

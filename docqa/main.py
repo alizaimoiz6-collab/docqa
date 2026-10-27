@@ -8,6 +8,7 @@ from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse
 
+from .budget import SpendLedger, make_ledger, seconds_until_utc_midnight, usage_cost
 from .config import Settings, get_settings
 from .documents import DocumentError, parse_upload, quote_in_chunk, select_chunks
 from .llm import Answerer, ClaudeAnswerer, LLMError
@@ -47,10 +48,13 @@ def create_app(
     settings: Settings | None = None,
     store: DocumentStore | None = None,
     answerer: Answerer | None = None,
+    ledger: SpendLedger | None = None,
 ) -> FastAPI:
     settings = settings or get_settings()
     store = store or make_store(settings.store_backend)
-    limiter = RateLimiter(settings.ask_rate_limit_per_min)
+    ledger = ledger or make_ledger(settings.store_backend)
+    ask_limiter = RateLimiter(settings.ask_rate_limit_per_min)
+    upload_limiter = RateLimiter(settings.upload_rate_limit_per_min)
     _answerer = answerer
 
     def get_answerer() -> Answerer:
@@ -98,12 +102,27 @@ def create_app(
     async def root():
         return RedirectResponse("/docs")
 
+    def check_rate(limiter: RateLimiter, request: Request, what: str) -> None:
+        wait = limiter.check(_client_key(request))
+        if wait is not None:
+            raise HTTPException(
+                429,
+                f"Limit is {limiter.per_minute} {what} per minute.",
+                headers={"Retry-After": str(int(wait) + 1)},
+            )
+
     @app.get("/health")
     async def health():
-        return {"status": "ok", "model": settings.model}
+        return {
+            "status": "ok",
+            "model": settings.model,
+            "daily_budget_usd": settings.daily_budget_usd,
+            "spent_today_usd": round(ledger.spent_today(), 4),
+        }
 
     @app.post("/upload", response_model=UploadResponse, responses=error_responses)
-    async def upload(file: UploadFile = File(...)):
+    async def upload(request: Request, file: UploadFile = File(...)):
+        check_rate(upload_limiter, request, "uploads")
         limit = settings.max_upload_mb * 1024 * 1024
         data = await file.read(limit + 1)
         if len(data) > limit:
@@ -123,12 +142,16 @@ def create_app(
 
     @app.post("/ask", response_model=AskResponse, responses=error_responses)
     async def ask(body: AskRequest, request: Request, answerer: Answerer = Depends(get_answerer)):
-        wait = limiter.check(_client_key(request))
-        if wait is not None:
-            raise HTTPException(
-                429,
-                f"Limit is {settings.ask_rate_limit_per_min} questions per minute.",
-                headers={"Retry-After": str(int(wait) + 1)},
+        check_rate(ask_limiter, request, "questions")
+
+        if settings.daily_budget_usd > 0 and ledger.spent_today() >= settings.daily_budget_usd:
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "error": "daily_limit_reached",
+                    "detail": "Daily demo limit reached. Please try again tomorrow.",
+                },
+                headers={"Retry-After": str(seconds_until_utc_midnight())},
             )
 
         doc = store.get(body.doc_id)
@@ -141,6 +164,8 @@ def create_app(
         started = time.perf_counter()
         result = await answerer.answer(body.question, doc.filename, chunks)
         latency_ms = int((time.perf_counter() - started) * 1000)
+        cost = usage_cost(result.model, result.usage)
+        ledger.add(cost)
 
         by_id = {c.id: c for c in doc.chunks}
         citations = []
@@ -165,6 +190,7 @@ def create_app(
             retrieval=retrieval,
             model=result.model,
             usage=result.usage,
+            cost_usd=round(cost, 6),
             latency_ms=latency_ms,
         )
 
