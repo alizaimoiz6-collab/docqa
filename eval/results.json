@@ -1,0 +1,688 @@
+[
+  {
+    "doc": "acme_policy.pdf",
+    "question": "What is the copay for outpatient visits?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": true,
+    "wall_ms": 3562,
+    "cost_usd": 0.007351,
+    "uncached_cost_usd": 0.00626,
+    "response": {
+      "doc_id": "31174aaaa047",
+      "question": "What is the copay for outpatient visits?",
+      "answerable": true,
+      "answer": "Outpatient visits have a copay of $25 per visit.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C1",
+          "page": 1,
+          "quote": "This policy covers outpatient visits with a copay of $25 per visit.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 19,
+        "output_tokens": 91,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 1091
+      },
+      "latency_ms": 2478
+    }
+  },
+  {
+    "doc": "acme_policy.pdf",
+    "question": "How long do I have to submit a claim?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3523,
+    "cost_usd": 0.0029501999999999996,
+    "uncached_cost_usd": 0.007096,
+    "response": {
+      "doc_id": "31174aaaa047",
+      "question": "How long do I have to submit a claim?",
+      "answerable": true,
+      "answer": "You must submit a claim within 90 days of the date of service. Late claims are denied unless you can show good cause.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C2",
+          "page": 2,
+          "quote": "Claims must be submitted within 90 days of the date of service.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C2",
+          "page": 2,
+          "quote": "Late claims are denied unless the member shows good cause.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 18,
+        "output_tokens": 133,
+        "cache_read_input_tokens": 1091,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2546
+    }
+  },
+  {
+    "doc": "acme_policy.pdf",
+    "question": "When is the ER copay waived?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 2719,
+    "cost_usd": 0.0023422,
+    "uncached_cost_usd": 0.006488,
+    "response": {
+      "doc_id": "31174aaaa047",
+      "question": "When is the ER copay waived?",
+      "answerable": true,
+      "answer": "The $150 emergency room copay is waived if the member is admitted to the hospital.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C3",
+          "page": 3,
+          "quote": "Emergency room visits have a $150 copay that is waived if the member is admitted to the hospital.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 16,
+        "output_tokens": 103,
+        "cache_read_input_tokens": 1091,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 1696
+    }
+  },
+  {
+    "doc": "acme_policy.pdf",
+    "question": "Does the policy cover prescription drugs?",
+    "expected_answerable": false,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3579,
+    "cost_usd": 0.0018182,
+    "uncached_cost_usd": 0.005964,
+    "response": {
+      "doc_id": "31174aaaa047",
+      "question": "Does the policy cover prescription drugs?",
+      "answerable": false,
+      "answer": "The document does not say whether prescription drugs are covered. It only describes outpatient visit copays, claim submission deadlines, and emergency room copays.",
+      "confidence": "high",
+      "citations": [],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 76,
+        "cache_read_input_tokens": 1091,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2492
+    }
+  },
+  {
+    "doc": "remote_work_policy.txt",
+    "question": "What equipment or allowance does the company provide for remote work?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": true,
+    "wall_ms": 3209,
+    "cost_usd": 0.009261,
+    "uncached_cost_usd": 0.008084,
+    "response": {
+      "doc_id": "c2653feda991",
+      "question": "What equipment or allowance does the company provide for remote work?",
+      "answerable": true,
+      "answer": "The company provides a laptop and a one-time home office stipend of $500. Employees themselves are responsible for a reliable internet connection of at least 50 Mbps.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C1",
+          "page": null,
+          "quote": "The company provides a laptop and a one-time home office stipend of $500.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C1",
+          "page": null,
+          "quote": "Employees are responsible for a reliable internet connection of at least 50 Mbps.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 24,
+        "output_tokens": 164,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 1177
+      },
+      "latency_ms": 2199
+    }
+  },
+  {
+    "doc": "remote_work_policy.txt",
+    "question": "What are the core hours for remote employees?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3326,
+    "cost_usd": 0.0035474,
+    "uncached_cost_usd": 0.00802,
+    "response": {
+      "doc_id": "c2653feda991",
+      "question": "What are the core hours for remote employees?",
+      "answerable": true,
+      "answer": "Remote employees must be reachable between 10:00 and 15:00 in their local time zone. Meetings should be scheduled within these core hours whenever possible.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C1",
+          "page": null,
+          "quote": "Remote employees must be reachable between 10:00 and 15:00 in their local time zone.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C1",
+          "page": null,
+          "quote": "Meetings should be scheduled within core hours whenever possible.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 18,
+        "output_tokens": 162,
+        "cache_read_input_tokens": 1177,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2184
+    }
+  },
+  {
+    "doc": "remote_work_policy.txt",
+    "question": "How quickly must a lost device be reported?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 2954,
+    "cost_usd": 0.0021514,
+    "uncached_cost_usd": 0.006624,
+    "response": {
+      "doc_id": "c2653feda991",
+      "question": "How quickly must a lost device be reported?",
+      "answerable": true,
+      "answer": "Lost or stolen devices must be reported to IT within 24 hours.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C1",
+          "page": null,
+          "quote": "Lost or stolen devices must be reported to IT within 24 hours.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 19,
+        "output_tokens": 92,
+        "cache_read_input_tokens": 1177,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 1872
+    }
+  },
+  {
+    "doc": "remote_work_policy.txt",
+    "question": "How many vacation days do employees get?",
+    "expected_answerable": false,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 2823,
+    "cost_usd": 0.0017834,
+    "uncached_cost_usd": 0.006256,
+    "response": {
+      "doc_id": "c2653feda991",
+      "question": "How many vacation days do employees get?",
+      "answerable": false,
+      "answer": "The document doesn't say how many vacation days employees get. It is a remote work policy and only covers eligibility, equipment, core hours, and security.",
+      "confidence": "high",
+      "citations": [],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 17,
+        "output_tokens": 74,
+        "cache_read_input_tokens": 1177,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 1754
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "What makes a claim 'clean'?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": true,
+    "wall_ms": 4253,
+    "cost_usd": 0.018807,
+    "uncached_cost_usd": 0.016196,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "What makes a claim 'clean'?",
+      "answerable": true,
+      "answer": "A claim is \"clean\" when it contains all of the following: a valid member ID, a valid provider NPI, at least one diagnosis code, at least one procedure code, the date of service, and the billed amount. Claims missing any of these are returned to the submitter with reason code R-12. They do not count toward turnaround metrics until they are resubmitted.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C2",
+          "page": null,
+          "quote": "A claim is considered \"clean\" when it contains a valid member ID, a valid provider NPI, at least one diagnosis code, at least one procedure code, the date of service and the billed amount.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C2",
+          "page": null,
+          "quote": "Claims missing any of these elements are returned to the submitter with reason code R-12 and are not counted toward turnaround metrics until they are resubmitted.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 18,
+        "output_tokens": 284,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 2611
+      },
+      "latency_ms": 3203
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "What is the filing deadline for providers versus members?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3673,
+    "cost_usd": 0.0047862,
+    "uncached_cost_usd": 0.014708,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "What is the filing deadline for providers versus members?",
+      "answerable": true,
+      "answer": "Providers must submit claims within 90 days of the date of service, while members who submit their own claims have 180 days from the date of service. Late claims are denied with reason code D-07 unless good cause is documented.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C2",
+          "page": null,
+          "quote": "Providers must submit claims within 90 days of the date of service.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C2",
+          "page": null,
+          "quote": "Members who submit their own claims have 180 days from the date of service.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C2",
+          "page": null,
+          "quote": "Late claims are denied with reason code D-07 unless the submitter documents good cause",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 21,
+        "output_tokens": 209,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2585
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "Who must approve a claim over $100,000?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3110,
+    "cost_usd": 0.0039822,
+    "uncached_cost_usd": 0.013904,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "Who must approve a claim over $100,000?",
+      "answerable": true,
+      "answer": "A claim over $100,000 needs a second review by a team lead before payment is released, since it exceeds the $25,000 threshold. It also needs sign-off from the Director of Claims.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "Claims over $25,000 require a second review by a team lead before payment is released.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "Claims over $100,000 also require sign-off from the Director of Claims.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 169,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2078
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "What happens if a service that needs prior authorization was performed without it?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3689,
+    "cost_usd": 0.0053662,
+    "uncached_cost_usd": 0.015288,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "What happens if a service that needs prior authorization was performed without it?",
+      "answerable": true,
+      "answer": "The claim is pended, and the provider has 30 days to submit retroactive authorization documents. If no documents arrive within those 30 days, the claim is denied with reason code D-15. (Emergency services never require prior authorization.)",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "If a service that needs prior authorization is performed without it, the claim is pended and the provider has 30 days to submit retroactive authorization documents.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "If no documents arrive within 30 days, the claim is denied with reason code D-15.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "Emergency services never require prior authorization.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 26,
+        "output_tokens": 237,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2641
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "When does interest accrue on clean claims that are decided late, and at what rate?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 4099,
+    "cost_usd": 0.0051221999999999995,
+    "uncached_cost_usd": 0.015044,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "When does interest accrue on clean claims that are decided late, and at what rate?",
+      "answerable": true,
+      "answer": "Interest accrues on clean claims that are not decided within 45 days. The rate is 1% per month. The interest is paid to the provider together with the claim payment. This is separate from the target of paying or denying 95% of clean claims within 30 calendar days of the received date.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "Clean claims not decided within 45 days accrue interest at 1% per month, paid to the provider together with the claim payment.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "Northwind Mutual's target is to pay or deny 95% of clean claims within 30 calendar days of the received date.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 30,
+        "output_tokens": 224,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 3040
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "Which fraud indicators require an SIU referral?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 4443,
+    "cost_usd": 0.008330200000000001,
+    "uncached_cost_usd": 0.018252,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "Which fraud indicators require an SIU referral?",
+      "answerable": true,
+      "answer": "Examiners must refer a claim to the SIU when they observe any of the following:\n- The same procedure billed for the same member more than three times in 30 days.\n- Services billed on a date after the member's recorded date of death.\n- A provider billing more than 24 hours of timed services in a single day.\n- Documents that appear altered.\n\nReferrals are made through the case management system using referral type \"SIU-1\".",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C3",
+          "page": null,
+          "quote": "Examiners must refer a claim to the SIU when they observe any of the following:",
+          "verified": true
+        },
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "the same procedure billed for the same member more than three times in 30 days;",
+          "verified": true
+        },
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "services billed on a date after the member's recorded date of death;",
+          "verified": true
+        },
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "a provider billing more than 24 hours of timed services in a single day;",
+          "verified": true
+        },
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "documents that appear altered.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "SIU referrals are made through the case management system using referral type \"SIU-1\".",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 22,
+        "output_tokens": 386,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 3437
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "How long are claim files retained?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3605,
+    "cost_usd": 0.0045222,
+    "uncached_cost_usd": 0.014444,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "How long are claim files retained?",
+      "answerable": true,
+      "answer": "Claim files, including attachments and correspondence, are retained for 10 years from the date the claim is closed. Files involving litigation or an SIU investigation are kept until the matter is resolved, plus 10 years.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C5",
+          "page": null,
+          "quote": "Claim files, including attachments and correspondence, are retained for 10 years from the date the claim is closed.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C5",
+          "page": null,
+          "quote": "Files involving litigation or an SIU investigation are retained until the matter is resolved, plus 10 years.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 15,
+        "output_tokens": 197,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2583
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "How long does someone have to request a second-level appeal review?",
+    "expected_answerable": true,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3639,
+    "cost_usd": 0.0042342,
+    "uncached_cost_usd": 0.014156,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "How long does someone have to request a second-level appeal review?",
+      "answerable": true,
+      "answer": "If the first-level appeal is upheld, the appellant has 60 days to request a second-level review by the Appeals Committee. The Committee meets on the first Wednesday of each month.",
+      "confidence": "high",
+      "citations": [
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "If the first-level appeal is upheld, the appellant may request a second-level review by the Appeals Committee within 60 days.",
+          "verified": true
+        },
+        {
+          "chunk_id": "C4",
+          "page": null,
+          "quote": "The Appeals Committee meets on the first Wednesday of each month.",
+          "verified": true
+        }
+      ],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 23,
+        "output_tokens": 181,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2116
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "What is the turnaround time for dental claims?",
+    "expected_answerable": false,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 2700,
+    "cost_usd": 0.0022021999999999996,
+    "uncached_cost_usd": 0.012124,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "What is the turnaround time for dental claims?",
+      "answerable": false,
+      "answer": "The manual does not give a turnaround time for dental claims. It states that dental plans are administered by a third party and are out of scope, so their processing timelines are not covered.",
+      "confidence": "high",
+      "citations": [],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 20,
+        "output_tokens": 80,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 1686
+    }
+  },
+  {
+    "doc": "claims_handling_manual.md",
+    "question": "Who is the CEO of Northwind Mutual?",
+    "expected_answerable": false,
+    "correct": true,
+    "first_question_on_doc": false,
+    "wall_ms": 3142,
+    "cost_usd": 0.0024142,
+    "uncached_cost_usd": 0.012336,
+    "response": {
+      "doc_id": "d212b45bc632",
+      "question": "Who is the CEO of Northwind Mutual?",
+      "answerable": false,
+      "answer": "The manual does not name a CEO of Northwind Mutual. The only leadership role it mentions is the Director of Claims, who signs off on claims over $100,000, and it does not name that person either.",
+      "confidence": "high",
+      "citations": [],
+      "retrieval": "full_document",
+      "model": "claude-opus-5-5",
+      "usage": {
+        "input_tokens": 23,
+        "output_tokens": 90,
+        "cache_read_input_tokens": 2611,
+        "cache_creation_input_tokens": 0
+      },
+      "latency_ms": 2143
+    }
+  }
+]

@@ -27,14 +27,20 @@ A web service that takes a PDF or text document and a question, and returns a **
 | Two-layer error handling (SDK retries, then clear HTTP codes; per-client rate limit) | Stays up under API rate limits and timeouts, and protects the API key on a public URL |
 
 ### Results
+Measured on the live deployment with an 18-question test set over three sample documents (insurance policy PDF, HR policy, claims-handling manual). The run is reproducible with [`eval/run_eval.py`](../eval/run_eval.py).
+
 | Metric | Value |
 |---|---|
-| Citations verified verbatim | **[TBD]**% across [N] test questions |
-| Median answer latency | **[TBD]** s |
-| Cost per question (avg) | **$[TBD]**, about [TBD]% lower on cached follow-ups |
-| Unanswerable questions correctly declined | **[TBD]** / [N] |
+| Answerable questions answered correctly | **14 / 14** |
+| Questions outside the document correctly declined | **4 / 4** (no invented answers) |
+| Citations verified verbatim against the source | **31 / 31 (100%)** |
+| End-to-end latency, median / p90 | **3.5 s / 4.1 s** |
+| Average cost per question | **$0.005** ($0.012 for the first question on a document, $0.004 for follow-ups) |
+| Savings from prompt caching | **55%** lower cost than without caching |
 | Automated tests | 26 passing (offline, Claude stubbed) |
 | Deployment | Public on Modal, scales to zero when idle |
+
+*Small test set on short documents; longer documents will take longer and cost more per first question.*
 
 ### Business value
 - **Trust:** reviewers check the cited quote instead of re-reading the document.
@@ -42,4 +48,4 @@ A web service that takes a PDF or text document and a question, and returns a **
 - **Low running cost:** serverless hosting and no retrieval infrastructure, so you pay only when it's used.
 
 ### What's next
-OCR for scanned PDFs, multi-document questions, streaming answers, and a labelled evaluation set that tracks citation precision over time.
+OCR for scanned PDFs, multi-document questions, streaming answers, and a larger evaluation set on long real-world documents, tracked over time.

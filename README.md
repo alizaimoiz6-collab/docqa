@@ -134,6 +134,25 @@ streamlit run frontend/streamlit_app.py                 # UI at http://localhost
 
 Sample documents are in [`sample_docs/`](sample_docs).
 
+### Evaluation
+
+[`eval/run_eval.py`](eval/run_eval.py) uploads the three sample documents to a deployment and asks 18 questions: 14 with known answers and 4 that the documents can't answer. It checks each answer against expected facts and reports accuracy, citation verification, latency and cost. Results against the live Modal deployment, from [`eval/results.md`](eval/results.md):
+
+| Metric | Value |
+|---|---|
+| Answerable questions answered correctly | 14/14 |
+| Unanswerable questions correctly declined | 4/4 |
+| Citations verified verbatim | 31/31 (100%) |
+| End-to-end latency, median / p90 | 3.5s / 4.1s |
+| Avg cost per question | $0.005 (first question on a doc $0.012, cached follow-ups $0.004) |
+| Saved by prompt caching | 55% |
+
+```bash
+python eval/run_eval.py --api https://alizaimoiz6--docqa-api.us-east.modal.run
+```
+
+The documents are short and the set is small. Treat these as a smoke test, not a benchmark.
+
 ### Tests
 
 ```bash
@@ -180,6 +199,8 @@ docqa/
   config.py      Environment-driven settings
 frontend/streamlit_app.py
 modal_app.py     Modal deployment (API + UI)
+eval/            Question set, runner, and latest results against the live app
+sample_docs/     Fictional documents for testing
 tests/
 ```
 
@@ -188,4 +209,4 @@ tests/
 - Scanned PDFs have no text layer and are rejected. Adding OCR, or sending the PDF to Claude as a `document` block, would cover them.
 - The rate limiter is per container. A shared store such as Redis or `modal.Dict` would make it global.
 - Uploaded documents are not encrypted at rest and never expire. Add a TTL and auth before handling sensitive data.
-- Next: streaming answers, multi-document questions, and an evaluation set that measures citation precision.
+- Next: streaming answers, multi-document questions, and a larger evaluation set built on long real-world documents.
