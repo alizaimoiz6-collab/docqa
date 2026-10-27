@@ -1,0 +1,13 @@
+Remote Work Policy
+
+Eligibility
+Full-time employees who have completed their 90-day probation period may work remotely up to three days per week, subject to manager approval.
+
+Equipment
+The company provides a laptop and a one-time home office stipend of $500. Employees are responsible for a reliable internet connection of at least 50 Mbps.
+
+Core Hours
+Remote employees must be reachable between 10:00 and 15:00 in their local time zone. Meetings should be scheduled within core hours whenever possible.
+
+Security
+Company data may only be accessed over the corporate VPN. Public Wi-Fi networks must not be used without the VPN enabled. Lost or stolen devices must be reported to IT within 24 hours.
