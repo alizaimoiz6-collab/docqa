@@ -3,6 +3,7 @@
 import io
 import math
 import re
+import time
 import uuid
 from collections import Counter
 
@@ -58,6 +59,7 @@ def parse_upload(filename: str, data: bytes, chunk_chars: int) -> Document:
         kind=kind,
         pages=page_count,
         chunks=chunks,
+        uploaded_at=time.time(),
     )
 
 

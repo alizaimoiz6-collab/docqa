@@ -230,3 +230,23 @@ def test_usage_cost_uses_model_prices():
     usage = Usage(input_tokens=1000, output_tokens=500, cache_read_input_tokens=10_000, cache_creation_input_tokens=2000)
     # Opus 5.5: 1000*4 + 500*20 + 10000*0.20 + 2000*5 = 26,000 per million tokens
     assert usage_cost("claude-opus-5-5", usage) == pytest.approx(0.026)
+
+
+# ---- Document expiry ------------------------------------------------------------
+
+
+def test_documents_expire_after_ttl():
+    import time
+
+    offset = {"s": 0.0}
+    store = InMemoryStore(ttl_seconds=3600, now=lambda: time.time() + offset["s"])
+    app = create_app(settings=Settings(), store=store, answerer=FakeAnswerer(OK_ANSWER), ledger=InMemoryLedger())
+    client = TestClient(app)
+    doc = upload_pdf(client)
+    payload = {"doc_id": doc["doc_id"], "question": "What is covered?"}
+
+    assert client.post("/ask", json=payload).status_code == 200
+    offset["s"] = 3601  # just over an hour later
+    resp = client.post("/ask", json=payload)
+    assert resp.status_code == 404
+    assert "expired" in resp.json()["detail"]

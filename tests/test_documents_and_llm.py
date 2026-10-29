@@ -137,3 +137,25 @@ def test_shared_ledger_sums_across_containers():
     shared["2026-10-26:a"] = 9.99  # yesterday doesn't count
 
     assert a.spent_today() == b.spent_today() == pytest.approx(1.00)
+
+
+def test_modal_store_sweeps_expired_and_legacy_documents():
+    from docqa.schemas import Document
+    from docqa.store import ModalDictStore
+
+    def make(doc_id, uploaded_at):
+        return Document(doc_id=doc_id, filename="f.txt", kind="text", pages=None,
+                        chunks=[Chunk(id="C1", text="x")], uploaded_at=uploaded_at)
+
+    store = ModalDictStore.__new__(ModalDictStore)
+    store._dict, store._index, store._ttl = {}, {}, 100
+    store._now = lambda: 1_000.0
+
+    store._dict["legacy"] = make("legacy", 0.0).model_dump()  # stored before expiry existed
+    store.put(make("old", 800.0))   # 200s old -> swept on the next put
+    store.put(make("new", 990.0))   # this put sweeps "old"
+
+    assert set(store._dict) == {"legacy", "new"} and set(store._index) == {"new"}
+    assert store.get("new") is not None
+    assert store.get("legacy") is None  # expired on lookup, then removed
+    assert "legacy" not in store._dict

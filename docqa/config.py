@@ -31,6 +31,9 @@ class Settings:
     # Total Claude spend allowed per UTC day across all visitors; 0 disables the cap.
     daily_budget_usd: float = float(os.environ.get("DAILY_BUDGET_USD", 1.0))
 
+    # Uploaded documents are deleted this many hours after upload.
+    doc_ttl_hours: float = float(os.environ.get("DOC_TTL_HOURS", 24))
+
     # "memory" for local dev; "modal" shares documents across Modal containers.
     store_backend: str = os.environ.get("DOCQA_STORE", "memory")
 

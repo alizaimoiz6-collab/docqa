@@ -51,7 +51,7 @@ def create_app(
     ledger: SpendLedger | None = None,
 ) -> FastAPI:
     settings = settings or get_settings()
-    store = store or make_store(settings.store_backend)
+    store = store or make_store(settings.store_backend, ttl_seconds=settings.doc_ttl_hours * 3600)
     ledger = ledger or make_ledger(settings.store_backend)
     ask_limiter = RateLimiter(settings.ask_rate_limit_per_min)
     upload_limiter = RateLimiter(settings.upload_rate_limit_per_min)
@@ -156,7 +156,11 @@ def create_app(
 
         doc = store.get(body.doc_id)
         if doc is None:
-            raise HTTPException(404, "Unknown doc_id. Upload the document first.")
+            raise HTTPException(
+                404,
+                f"Unknown or expired doc_id. Documents are deleted {settings.doc_ttl_hours:g} hours "
+                "after upload; upload it again.",
+            )
 
         chunks, retrieval = select_chunks(
             doc, body.question, settings.context_char_budget, settings.top_k_chunks

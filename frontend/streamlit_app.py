@@ -30,6 +30,11 @@ def show_api_error(resp: requests.Response) -> None:
 # ---- Upload -----------------------------------------------------------------
 
 uploaded = st.file_uploader("Document", type=["pdf", "txt", "md"])
+st.caption(
+    "🔒 This is a public demo. Your document is sent to Anthropic's Claude API to answer "
+    "questions and is deleted from this app 24 hours after upload. "
+    "Please don't upload confidential or personal documents."
+)
 if uploaded and st.session_state.get("uploaded_name") != uploaded.name + str(uploaded.size):
     with st.spinner("Reading document..."):
         try:

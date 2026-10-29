@@ -38,6 +38,9 @@ class Document(BaseModel):
     kind: Literal["pdf", "text"]
     pages: int | None
     chunks: list[Chunk]
+    # Unix time of upload. Documents stored before expiry existed default to 0,
+    # so they count as expired.
+    uploaded_at: float = 0.0
 
     @property
     def char_count(self) -> int:

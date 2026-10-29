@@ -104,7 +104,7 @@ Every error has the same shape: `{"error": "<code>", "detail": "<message>"}`.
 
 | Status | When |
 |---|---|
-| `404 not_found` | Unknown `doc_id` |
+| `404 not_found` | Unknown or expired `doc_id` (documents are deleted `DOC_TTL_HOURS` after upload) |
 | `413 payload_too_large` | Upload over `MAX_UPLOAD_MB`, or document too large for the model |
 | `415 unsupported_media_type` | Not a PDF or text file |
 | `422 unprocessable` | Empty file, scanned PDF without a text layer, encrypted PDF, bad question, or the model declined |
@@ -191,6 +191,7 @@ Modal prints two public URLs: `https://<workspace>--docqa-api.modal.run` (FastAP
 | `ASK_RATE_LIMIT_PER_MIN` | `10` | Per-client `/ask` limit |
 | `UPLOAD_RATE_LIMIT_PER_MIN` | `5` | Per-client `/upload` limit |
 | `DAILY_BUDGET_USD` | `1.0` | Total Claude spend allowed per UTC day across all visitors. `0` disables it |
+| `DOC_TTL_HOURS` | `24` | Uploaded documents are deleted this long after upload |
 | `DOCQA_STORE` | `memory` | `memory` or `modal` |
 | `API_URL` | `http://localhost:8000` | Where the Streamlit UI sends requests |
 
@@ -211,9 +212,16 @@ sample_docs/     Fictional documents for testing
 tests/
 ```
 
+## Security and privacy
+
+- **API key:** stored only as a Modal secret (`anthropic-secret`). It's never in the code, the repo or a response. GitHub secret scanning and push protection are on.
+- **Spend:** a shared `DAILY_BUDGET_USD` cap (default $1/day) for Claude, per-client rate limits on `/ask` and `/upload`, and `max_containers` on both Modal functions to cap compute.
+- **Data:** documents are sent to the Claude API to answer questions and deleted from the app `DOC_TTL_HOURS` (24) after upload. The UI tells visitors not to upload confidential documents.
+- **Dependencies:** versions are pinned in `requirements*.txt`, and GitHub Dependabot alerts are on.
+
 ## Limitations and next steps
 
 - Scanned PDFs have no text layer and are rejected. Adding OCR, or sending the PDF to Claude as a `document` block, would cover them.
 - Per-client rate limits are kept per container, so they loosen if Modal scales out. The daily budget is shared across containers and is the hard cap. Requests already running when the budget is hit can overshoot it by a few cents.
-- Uploaded documents are not encrypted at rest and never expire. Add a TTL and auth before handling sensitive data.
+- Uploads are deleted 24 hours after upload, but they aren't encrypted by the app and there's no login. Anyone with a `doc_id` can ask about that document. Add authentication before handling sensitive data.
 - Next: streaming answers, multi-document questions, and a larger evaluation set built on long real-world documents.

@@ -33,6 +33,7 @@ ui_image = (
     secrets=[modal.Secret.from_name("anthropic-secret")],
     timeout=300,
     scaledown_window=300,
+    max_containers=2,  # caps Modal compute spend under a traffic flood
 )
 @modal.concurrent(max_inputs=20)
 @modal.asgi_app()
@@ -42,7 +43,7 @@ def api():
     return fastapi_app
 
 
-@app.function(image=ui_image, timeout=3600, scaledown_window=300)
+@app.function(image=ui_image, timeout=3600, scaledown_window=300, max_containers=1)
 @modal.concurrent(max_inputs=50)
 @modal.web_server(8000, startup_timeout=120)
 def ui():
