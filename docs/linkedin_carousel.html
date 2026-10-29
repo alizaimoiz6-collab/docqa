@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocQA Carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f172a;
+    --body: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --soft: #f8fafc;
+    --accent: #0f766e;
+    --accent-2: #14b8a6;
+    --accent-soft: #ecfdf5;
+    --warn: #b45309;
+  }
+  @page { size: 1080px 1350px; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: #fff; color: var(--body); font-family: Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
+
+  .slide {
+    width: 1080px; height: 1350px;
+    padding: 96px 88px 80px;
+    display: flex; flex-direction: column;
+    position: relative; overflow: hidden;
+    break-after: page; page-break-after: always;
+    background: #fff;
+  }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .slide.dark { background: var(--ink); color: #cbd5e1; }
+
+  .kicker { font-size: 26px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  .dark .kicker { color: var(--accent-2); }
+  h1 { font-size: 104px; line-height: 1.02; font-weight: 900; letter-spacing: -.035em; color: var(--ink); margin-top: 28px; }
+  .dark h1 { color: #fff; }
+  h2 { font-size: 76px; line-height: 1.06; font-weight: 800; letter-spacing: -.03em; color: var(--ink); margin-top: 22px; }
+  .lead { font-size: 38px; line-height: 1.4; margin-top: 36px; color: var(--body); }
+  .dark .lead { color: #cbd5e1; }
+  .hl { color: var(--accent); }
+  .dark .hl { color: var(--accent-2); }
+
+  footer {
+    margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+    font-size: 24px; color: var(--muted); padding-top: 32px; border-top: 2px solid var(--line);
+  }
+  .dark footer { border-color: #1e293b; color: #94a3b8; }
+  footer b { color: var(--ink); font-weight: 700; }
+  .dark footer b { color: #fff; }
+  .swipe { font-weight: 700; color: var(--accent); }
+  .dark .swipe { color: var(--accent-2); }
+
+  /* Slide 1 */
+  .cite-card {
+    margin-top: 64px; border-radius: 28px; background: #111c33; border: 2px solid #1e293b; padding: 40px 44px;
+  }
+  .cite-card .q { font-size: 28px; color: #94a3b8; }
+  .cite-card .a { font-size: 34px; color: #fff; margin: 14px 0 26px; line-height: 1.35; font-weight: 500; }
+  .cite { display: flex; gap: 18px; align-items: flex-start; padding: 18px 0; border-top: 1px solid #1e293b; }
+  .badge { flex-shrink: 0; font-size: 22px; font-weight: 700; color: #042f2e; background: var(--accent-2); border-radius: 10px; padding: 6px 14px; }
+  .cite .t { font-size: 26px; color: #cbd5e1; line-height: 1.35; }
+  .cite .t em { font-style: normal; color: #94a3b8; font-size: 22px; display: block; margin-bottom: 4px; }
+
+  /* Slide 2 */
+  .points { margin-top: 56px; display: grid; gap: 30px; }
+  .point { display: flex; gap: 28px; align-items: flex-start; padding: 34px 36px; border-radius: 24px; background: var(--soft); border: 2px solid var(--line); }
+  .point .ico { font-size: 46px; line-height: 1; }
+  .point .t { font-size: 34px; line-height: 1.35; color: var(--ink); }
+  .point .t span { display: block; font-size: 27px; color: var(--muted); margin-top: 8px; }
+
+  /* Slide 3 */
+  .shot { margin-top: 40px; border-radius: 24px; overflow: hidden; border: 2px solid var(--line); box-shadow: 0 20px 50px rgba(15, 23, 42, .12); }
+  .shot img { width: 100%; display: block; }
+  .shot figcaption { font-size: 24px; color: var(--muted); padding: 16px 24px; background: var(--soft); border-top: 2px solid var(--line); }
+  .labels { margin-top: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .label { border-radius: 20px; padding: 22px 24px; background: var(--accent-soft); border: 2px solid #a7f3d0; }
+  .label b { display: block; font-size: 30px; color: var(--accent); margin-bottom: 6px; }
+  .label span { font-size: 25px; line-height: 1.35; color: var(--body); }
+
+  /* Slide 4 */
+  .steps { margin-top: 52px; display: grid; gap: 22px; }
+  .step { display: grid; grid-template-columns: 96px 1fr; gap: 28px; align-items: center; padding: 30px 34px; border-radius: 24px; border: 2px solid var(--line); }
+  .step .n { width: 96px; height: 96px; border-radius: 50%; background: var(--soft); border: 2px solid var(--line); display: grid; place-items: center; font-size: 38px; font-weight: 800; color: var(--accent); }
+  .step .t { font-size: 38px; font-weight: 700; color: var(--ink); }
+  .step .d { font-size: 27px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
+  .step.key { background: var(--accent-soft); border-color: var(--accent); }
+  .step.key .n { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* Slide 5 */
+  .grid { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .stat { border-radius: 24px; padding: 32px 36px; background: #111c33; border: 2px solid #1e293b; }
+  .stat .num { font-size: 92px; font-weight: 900; letter-spacing: -.03em; color: var(--accent-2); line-height: 1; font-variant-numeric: tabular-nums; }
+  .stat .lbl { font-size: 28px; color: #cbd5e1; margin-top: 14px; line-height: 1.35; }
+  .stat.wide { grid-column: 1 / -1; display: flex; align-items: center; gap: 40px; }
+  .stat.wide .lbl { margin-top: 0; }
+  .fine { font-size: 24px; color: #94a3b8; margin-top: 30px; line-height: 1.4; }
+
+  /* Slide 6 */
+  .lessons { margin-top: 56px; display: grid; gap: 40px; counter-reset: l; }
+  .lesson { display: grid; grid-template-columns: 72px 1fr; gap: 24px; align-items: start; }
+  .lesson .n { width: 72px; height: 72px; border-radius: 18px; background: var(--accent); color: #fff; font-size: 34px; font-weight: 800; display: grid; place-items: center; }
+  .lesson .t { font-size: 34px; color: var(--ink); line-height: 1.32; font-weight: 600; padding-top: 8px; }
+  .lesson .t span { display: block; font-weight: 400; font-size: 27px; color: var(--muted); margin-top: 6px; }
+  .cta { margin-top: 72px; display: flex; gap: 40px; align-items: center; padding: 40px 44px; border-radius: 28px; background: var(--ink); color: #cbd5e1; }
+  .cta img { width: 190px; height: 190px; background: #fff; padding: 14px; border-radius: 16px; flex-shrink: 0; }
+  .cta .big { font-size: 44px; font-weight: 800; color: #fff; line-height: 1.15; }
+  .cta .small { font-size: 26px; margin-top: 14px; line-height: 1.45; }
+
+  /* Preview one slide at a time with #1 … #6 (used for PNG exports). */
+  body.single .slide { display: none; }
+  body.single .slide.on { display: flex; }
+  @media screen { body:not(.single) { background: #e2e8f0; } body:not(.single) .slide { margin: 40px auto; box-shadow: 0 10px 40px rgba(0,0,0,.15); } }
+</style>
+</head>
+<body>
+
+<!-- 1. Hook -->
+<section class="slide dark">
+  <div class="kicker">I built an AI document tool</div>
+  <h1>AI that <span class="hl">shows its work.</span></h1>
+  <p class="lead">Ask a document a question. Every claim in the answer comes with its <b style="color:#fff">page</b>, the <b style="color:#fff">exact quote</b>, and a check that the quote is really there.</p>
+  <div class="cite-card">
+    <div class="q">Q: When must claims be filed, and what is the ER copay?</div>
+    <div class="a">Within 90 days of the date of service. The ER copay is $150, waived if the member is admitted.</div>
+    <div class="cite"><span class="badge">✓ p.2</span><div class="t"><em>Verified quote</em>"Claims must be submitted within 90 days of the date of service."</div></div>
+    <div class="cite"><span class="badge">✓ p.3</span><div class="t"><em>Verified quote</em>"Emergency room visits have a $150 copay that is waived if the member is admitted to the hospital."</div></div>
+  </div>
+  <footer><span><b>Moiz Alizai</b> · DocQA</span><span class="swipe">Swipe →</span></footer>
+</section>
+
+<!-- 2. Problem -->
+<section class="slide">
+  <div class="kicker">The problem</div>
+  <h2>Confident answers.<br>No sources.</h2>
+  <p class="lead">AI chat can summarise a 50-page policy in seconds. But you can't tell which parts are real.</p>
+  <div class="points">
+    <div class="point"><div class="ico">📄</div><div class="t">Long documents run the work<span>Insurance policies, claims manuals, contracts: one clause can take an hour to find.</span></div></div>
+    <div class="point"><div class="ico">🤔</div><div class="t">Answers you can't check<span>An AI can make up a source that looks just as convincing as a real one.</span></div></div>
+    <div class="point"><div class="ico">⚖️</div><div class="t">Unverifiable means unusable<span>In regulated work, an answer without a source can't be acted on.</span></div></div>
+  </div>
+  <footer><span><b>Moiz Alizai</b> · DocQA</span><span>2 / 6</span></footer>
+</section>
+
+<!-- 3. What it does -->
+<section class="slide">
+  <div class="kicker">What I built</div>
+  <h2 style="font-size:70px">Cited, quoted, <span class="hl">checked.</span></h2>
+  <figure class="shot">
+    <img src="assets/demo.jpg" alt="DocQA answering a question with three verified, page-numbered citations">
+    <figcaption>Real answer from the live app, on a sample insurance policy PDF</figcaption>
+  </figure>
+  <div class="labels">
+    <div class="label"><b>Page number</b><span>Where each claim came from</span></div>
+    <div class="label"><b>Exact quote</b><span>The words it's based on</span></div>
+    <div class="label"><b>✅ Verified</b><span>Checked against the source in code</span></div>
+  </div>
+  <footer><span><b>Moiz Alizai</b> · DocQA</span><span>3 / 6</span></footer>
+</section>
+
+<!-- 4. How it works -->
+<section class="slide">
+  <div class="kicker">How it works</div>
+  <h2>Four steps. The last one is the point.</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div><div class="t">Upload</div><div class="d">A PDF or text file is split into numbered passages that keep their page numbers.</div></div></div>
+    <div class="step"><div class="n">2</div><div><div class="t">Ask Claude</div><div class="d">The document and the question go to Claude Opus 5.5.</div></div></div>
+    <div class="step"><div class="n">3</div><div><div class="t">Structured answer</div><div class="d">The reply must match a fixed format: answer, confidence, and a passage + quote for each claim.</div></div></div>
+    <div class="step key"><div class="n">4</div><div><div class="t">Verify in code</div><div class="d">Each quote is matched against the passage it cites. Anything made up gets flagged ⚠️.</div></div></div>
+  </div>
+  <footer><span><b>Moiz Alizai</b> · DocQA</span><span>4 / 6</span></footer>
+</section>
+
+<!-- 5. Results -->
+<section class="slide dark">
+  <div class="kicker">Results on the live app</div>
+  <h2 style="color:#fff">Tested, not just demoed.</h2>
+  <div class="grid">
+    <div class="stat"><div class="num">100%</div><div class="lbl">of citations verified against the source (31 / 31)</div></div>
+    <div class="stat"><div class="num">18 / 18</div><div class="lbl">questions correct, incl. 4 trick ones declined with nothing invented</div></div>
+    <div class="stat"><div class="num">3.5 s</div><div class="lbl">median time to a full, cited answer</div></div>
+    <div class="stat"><div class="num">$0.005</div><div class="lbl">average cost per question; caching cut it 55%</div></div>
+    <div class="stat wide"><div class="num">$1/day</div><div class="lbl">hard spending cap on the public demo, so a shared link can't run up the bill</div></div>
+  </div>
+  <p class="fine">18-question test on three short sample documents; longer documents cost more. Python · FastAPI · Claude · Streamlit · Modal · 34 automated tests.</p>
+  <footer><span><b>Moiz Alizai</b> · DocQA</span><span>5 / 6</span></footer>
+</section>
+
+<!-- 6. Lessons + CTA -->
+<section class="slide">
+  <div class="kicker">What I learned</div>
+  <h2>Three lessons from shipping it.</h2>
+  <div class="lessons">
+    <div class="lesson"><div class="n">1</div><div class="t">Ask for structure, not prose.<span>Typed, structured output makes an AI far easier to build on reliably.</span></div></div>
+    <div class="lesson"><div class="n">2</div><div class="t">Check the AI's work in code.<span>Verifying every quote beats asking the model to "be careful".</span></div></div>
+    <div class="lesson"><div class="n">3</div><div class="t">Cap spending from day one.<span>A public demo needs rate limits and a hard budget. Mine stops at $1/day.</span></div></div>
+  </div>
+  <div class="cta">
+    <img src="assets/qr_demo.svg" alt="QR code linking to the live demo">
+    <div>
+      <div class="big">Try it yourself</div>
+      <div class="small">Live demo and code in the comments.<br>Scan the code to open the app.<br><b style="color:#fff">linkedin.com/in/moizalizai</b></div>
+    </div>
+  </div>
+  <footer><span><b>Moiz Alizai</b> · DocQA</span><span>6 / 6</span></footer>
+</section>
+
+<script>
+  const n = parseInt(location.hash.slice(1), 10);
+  if (n) {
+    document.body.classList.add("single");
+    document.querySelectorAll(".slide")[n - 1]?.classList.add("on");
+  }
+</script>
+</body>
+</html>
